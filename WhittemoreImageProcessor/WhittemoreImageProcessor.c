@@ -80,12 +80,231 @@ void report_progress(const char* operation, int progress, int total) {
     if (progress == total) printf("\n");
 }
 
-int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        print_error("Running an image processor without an image? That's like making a sandwich without bread!", 2);
-        print_usage();
-        return 1;
+// Different levels of help menus
+void print_simplified_usage() {
+    printf("\n🌟 SUPER SIMPLE INSTRUCTIONS (Because reading is hard) 🌟\n\n");
+    printf("Step 1️⃣: Find an image file (it ends in .bmp)\n");
+    printf("Step 2️⃣: Type this:\n");
+    printf("         ./WhittemoreImageProcessor yourimage.bmp\n\n");
+    printf("Step 3️⃣: Add ONE of these if you're feeling brave:\n");
+    printf("         -w        Make it black & white\n");
+    printf("         -r 50     Make it more red\n");
+    printf("         -s 2      Make it bigger\n\n");
+    printf("Example for the ambitious:\n");
+    printf("./WhittemoreImageProcessor cat.bmp -w\n\n");
+    printf("(Want the grown-up instructions? Use --help)\n");
+}
+
+// Enhanced argument validation
+typedef struct {
+    const char* option;
+    int requires_value;
+    const char* sassy_message;
+} ValidOption;
+
+static const ValidOption VALID_OPTIONS[] = {
+    {"-o", 1, "Output file name needed! Where should the masterpiece be saved?"},
+    {"-w", 0, NULL},
+    {"-r", 1, "Red shift needs a number! Any number! (Well, -255 to 255)"},
+    {"-g", 1, "Green shift requires a value. It's not a mind reader!"},
+    {"-b", 1, "Blue shift expects a number. Color theory 101!"},
+    {"-s", 1, "Scale factor missing! Size matters!"},
+    {"--sepia", 0, NULL},
+    {"--rotate", 1, "Rotation needs degrees! (Hint: 90, 180, or 270)"},
+    {"--fliph", 0, NULL},
+    {"--flipv", 0, NULL},
+    {"--bright", 1, "Brightness value needed! (-255 to 255, not 'bright' or 'dark')"},
+    {"--contrast", 1, "Contrast factor needed! (Numbers work better than 'more' or 'less')"},
+    {"--edge", 0, NULL},
+    {"--blur", 1, "Blur radius needed! (A number, not 'kinda blurry')"},
+    {"--invert", 0, NULL},
+    {"--psych", 0, NULL},
+    {"--vignette", 1, "Vignette strength needed! (0-1, not 'Instagram-worthy')"}
+};
+
+// Levenshtein distance for "Did you mean?" suggestions
+int levenshtein_distance(const char* s1, const char* s2) {
+    int len1 = strlen(s1), len2 = strlen(s2);
+    int matrix[len1 + 1][len2 + 1];
+    
+    for (int i = 0; i <= len1; i++) matrix[i][0] = i;
+    for (int j = 0; j <= len2; j++) matrix[0][j] = j;
+    
+    for (int i = 1; i <= len1; i++) {
+        for (int j = 1; j <= len2; j++) {
+            int cost = (s1[i-1] == s2[j-1]) ? 0 : 1;
+            matrix[i][j] = fmin(matrix[i-1][j] + 1,
+                              fmin(matrix[i][j-1] + 1,
+                                  matrix[i-1][j-1] + cost));
+        }
     }
+    return matrix[len1][len2];
+}
+
+// Easter egg handling
+void handle_easter_egg(const char* arg) {
+    if (strcmp(arg, "--coffee") == 0) {
+        printf("\n☕ ERROR 418: I'm a teapot\n"
+               "    (But here's your virtual coffee anyway)\n"
+               "    \n"
+               "         )\n"
+               "        (\n"
+               "      _____)\n"
+               "     (_____))\n"
+               "    (______)))\n"
+               "   (_______)))\n"
+               "    |COFFEE|\n"
+               "    |     |\n"
+               "    |     |\n"
+               "    |     |\n"
+               "    |     |\n"
+               "    |_____|\n\n");
+        exit(0);
+    } else if (strcmp(arg, "--help-please") == 0) {
+        printf("\n🎭 Ah, politeness! How refreshing!\n"
+               "Here's your help menu, served with a smile:\n");
+        print_usage();
+        exit(0);
+    }
+}
+
+// Track user errors for progressive sass
+static struct {
+    int error_count;
+    char last_error[256];
+} UserErrorTracker = {0, ""};
+
+void suggest_similar_option(const char* invalid_option) {
+    const char* best_match = NULL;
+    int min_distance = INT_MAX;
+    
+    // Find the most similar valid option
+    for (size_t i = 0; i < sizeof(VALID_OPTIONS)/sizeof(ValidOption); i++) {
+        int distance = levenshtein_distance(invalid_option, VALID_OPTIONS[i].option);
+        if (distance < min_distance && distance <= 3) {  // Max 3 character differences
+            min_distance = distance;
+            best_match = VALID_OPTIONS[i].option;
+        }
+    }
+    
+    if (best_match) {
+        printf("💡 Did you mean '%s'?\n", best_match);
+        
+        // Add contextual hints based on common mistakes
+        if (strstr(invalid_option, "grey") || strstr(invalid_option, "gray")) {
+            printf("   (Use '-w' for grayscale conversion)\n");
+        } else if (strstr(invalid_option, "flip")) {
+            printf("   (Use '--fliph' for horizontal or '--flipv' for vertical flips)\n");
+        }
+    }
+}
+
+void handle_progressive_sass(const char* invalid_option) {
+    UserErrorTracker.error_count++;
+    strncpy(UserErrorTracker.last_error, invalid_option, 255);
+    
+    printf("\n");
+    switch(UserErrorTracker.error_count) {
+        case 1:
+            printf("😊 Oops! '%s' isn't a valid option.\n", invalid_option);
+            break;
+        case 2:
+            printf("🤔 Still trying with '%s'? Let's check those options again.\n", invalid_option);
+            break;
+        case 3:
+            printf("😅 Third time's... not the charm with '%s'.\n", invalid_option);
+            print_simplified_usage();
+            break;
+        case 4:
+            printf("🎮 This isn't a game of option-guessing, but if it were, you'd be losing.\n");
+            printf("Here's a super-duper simple guide:\n");
+            print_simplified_usage();
+            break;
+        default:
+            printf("🎯 %d attempts and counting! Your persistence is... impressive?\n", 
+                   UserErrorTracker.error_count);
+            printf("Maybe try:\n");
+            printf("1. Reading the manual (--help)\n");
+            printf("2. Taking a coffee break (--coffee)\n");
+            printf("3. Asking politely (--help-please)\n");
+            break;
+    }
+    
+    suggest_similar_option(invalid_option);
+}
+
+// Interactive option suggestions
+void suggest_next_steps(const char* current_option) {
+    printf("\n💡 Common next steps after %s:\n", current_option);
+    if (strcmp(current_option, "-w") == 0) {
+        printf("   • Add '--sepia' for that vintage look\n");
+        printf("   • Try '--contrast 1.2' to make it pop\n");
+    } else if (strstr(current_option, "flip") != NULL) {
+        printf("   • Add '--rotate 90' for more transformation\n");
+        printf("   • Try '--edge' to detect edges\n");
+    }
+    // ... more contextual suggestions
+}
+
+// Update validate_arguments to use new features
+void validate_arguments(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "😕 No image file? That's like trying to make a sandwich with no bread!\n\n");
+        print_simplified_usage();
+        exit(1);
+    }
+
+    // Check if help is needed
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
+            print_usage();
+            exit(0);
+        }
+    }
+
+    // Validate input file
+    if (access(argv[1], F_OK) != 0) {
+        fprintf(stderr, "🔍 File '%s' not found!\n"
+                       "   Checked under the keyboard? Behind the monitor?\n"
+                       "   No? Maybe try a file that actually exists!\n\n", argv[1]);
+        print_simplified_usage();
+        exit(1);
+    }
+
+    // Validate options
+    for (int i = 2; i < argc; i++) {
+        // Check for easter eggs first
+        handle_easter_egg(argv[i]);
+        
+        int valid_option = 0;
+        for (size_t j = 0; j < sizeof(VALID_OPTIONS)/sizeof(ValidOption); j++) {
+            if (strcmp(argv[i], VALID_OPTIONS[j].option) == 0) {
+                valid_option = 1;
+                suggest_next_steps(argv[i]);
+                if (VALID_OPTIONS[j].requires_value) {
+                    if (i + 1 >= argc || argv[i + 1][0] == '-') {
+                        fprintf(stderr, "😅 Oops! %s\n", VALID_OPTIONS[j].sassy_message);
+                        print_simplified_usage();
+                        exit(1);
+                    }
+                    i++; // Skip the value in next iteration
+                }
+                break;
+            }
+        }
+        if (!valid_option) {
+            handle_progressive_sass(argv[i]);
+            exit(1);
+        }
+    }
+}
+
+int main(int argc, char *argv[]) {
+    // Add some flair
+    printf("\n🎨 WhittemoreImageProcessor: Because MS Paint was too mainstream 🎨\n");
+    
+    // Validate all arguments before processing
+    validate_arguments(argc, argv);
 
     // Default values
     char* input_file = argv[1];
