@@ -5,6 +5,6 @@ C:\Users\killb\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCM
 -- Check for working C compiler: C:/Users/killb/AppData/Local/Programs/CLion/bin/mingw/bin/gcc.exe - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Configuring done (2.3s)
+-- Configuring done (1.1s)
 -- Generating done (0.0s)
 -- Build files have been written to: D:/git/ser334/WhittemoreImageProcessor/cmake-build-debug

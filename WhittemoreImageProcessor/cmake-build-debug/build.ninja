@@ -49,9 +49,28 @@ cmake_ninja_workdir = D$:/git/ser334/WhittemoreImageProcessor/cmake-build-debug/
 
 build cmake_object_order_depends_target_WhittemoreImageProcessor: phony || .
 
-build CMakeFiles/WhittemoreImageProcessor.dir/main.c.obj: C_COMPILER__WhittemoreImageProcessor_unscanned_Debug D$:/git/ser334/WhittemoreImageProcessor/main.c || cmake_object_order_depends_target_WhittemoreImageProcessor
-  DEP_FILE = CMakeFiles\WhittemoreImageProcessor.dir\main.c.obj.d
-  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+build CMakeFiles/WhittemoreImageProcessor.dir/WhittemoreImageProcessor.c.obj: C_COMPILER__WhittemoreImageProcessor_unscanned_Debug D$:/git/ser334/WhittemoreImageProcessor/WhittemoreImageProcessor.c || cmake_object_order_depends_target_WhittemoreImageProcessor
+  DEP_FILE = CMakeFiles\WhittemoreImageProcessor.dir\WhittemoreImageProcessor.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -ID:/git/ser334/WhittemoreImageProcessor
+  OBJECT_DIR = CMakeFiles\WhittemoreImageProcessor.dir
+  OBJECT_FILE_DIR = CMakeFiles\WhittemoreImageProcessor.dir
+  TARGET_COMPILE_PDB = CMakeFiles\WhittemoreImageProcessor.dir\
+  TARGET_PDB = WhittemoreImageProcessor.pdb
+
+build CMakeFiles/WhittemoreImageProcessor.dir/BMPHandler.c.obj: C_COMPILER__WhittemoreImageProcessor_unscanned_Debug D$:/git/ser334/WhittemoreImageProcessor/BMPHandler.c || cmake_object_order_depends_target_WhittemoreImageProcessor
+  DEP_FILE = CMakeFiles\WhittemoreImageProcessor.dir\BMPHandler.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -ID:/git/ser334/WhittemoreImageProcessor
+  OBJECT_DIR = CMakeFiles\WhittemoreImageProcessor.dir
+  OBJECT_FILE_DIR = CMakeFiles\WhittemoreImageProcessor.dir
+  TARGET_COMPILE_PDB = CMakeFiles\WhittemoreImageProcessor.dir\
+  TARGET_PDB = WhittemoreImageProcessor.pdb
+
+build CMakeFiles/WhittemoreImageProcessor.dir/Image.c.obj: C_COMPILER__WhittemoreImageProcessor_unscanned_Debug D$:/git/ser334/WhittemoreImageProcessor/Image.c || cmake_object_order_depends_target_WhittemoreImageProcessor
+  DEP_FILE = CMakeFiles\WhittemoreImageProcessor.dir\Image.c.obj.d
+  FLAGS = -g -std=gnu11 -fdiagnostics-color=always
+  INCLUDES = -ID:/git/ser334/WhittemoreImageProcessor
   OBJECT_DIR = CMakeFiles\WhittemoreImageProcessor.dir
   OBJECT_FILE_DIR = CMakeFiles\WhittemoreImageProcessor.dir
   TARGET_COMPILE_PDB = CMakeFiles\WhittemoreImageProcessor.dir\
@@ -65,7 +84,7 @@ build CMakeFiles/WhittemoreImageProcessor.dir/main.c.obj: C_COMPILER__Whittemore
 #############################################
 # Link the executable WhittemoreImageProcessor.exe
 
-build WhittemoreImageProcessor.exe: C_EXECUTABLE_LINKER__WhittemoreImageProcessor_Debug CMakeFiles/WhittemoreImageProcessor.dir/main.c.obj
+build WhittemoreImageProcessor.exe: C_EXECUTABLE_LINKER__WhittemoreImageProcessor_Debug CMakeFiles/WhittemoreImageProcessor.dir/WhittemoreImageProcessor.c.obj CMakeFiles/WhittemoreImageProcessor.dir/BMPHandler.c.obj CMakeFiles/WhittemoreImageProcessor.dir/Image.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\WhittemoreImageProcessor.dir
