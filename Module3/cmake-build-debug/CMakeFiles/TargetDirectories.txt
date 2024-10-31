@@ -1,0 +1,3 @@
+D:/git/ser334/Module3/cmake-build-debug/CMakeFiles/Module3.dir
+D:/git/ser334/Module3/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/git/ser334/Module3/cmake-build-debug/CMakeFiles/rebuild_cache.dir

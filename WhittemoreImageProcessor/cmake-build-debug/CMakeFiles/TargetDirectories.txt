@@ -1,0 +1,3 @@
+D:/git/ser334/WhittemoreImageProcessor/cmake-build-debug/CMakeFiles/WhittemoreImageProcessor.dir
+D:/git/ser334/WhittemoreImageProcessor/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/git/ser334/WhittemoreImageProcessor/cmake-build-debug/CMakeFiles/rebuild_cache.dir
