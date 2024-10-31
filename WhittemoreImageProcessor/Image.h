@@ -1,10 +1,10 @@
 /**
-* Specification for an image ADT.
+* Implementation of image processing functions with a side of humor.
 *
-* Completion time: ?
+* Completion time: 8 hours (and several cups of coffee)
 *
-* @author (your name), Ruben Acuna
-* @version 9/9/2021
+* @author Uriah Zane Whittemore
+* @version 1.0
 */
 
 #ifndef PixelProcessor_H

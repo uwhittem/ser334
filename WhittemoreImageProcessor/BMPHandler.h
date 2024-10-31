@@ -1,3 +1,12 @@
+/**
+* Implementation of image processing functions with a side of humor.
+*
+* Completion time: 8 hours (and several cups of coffee)
+*
+* @author Uriah Zane Whittemore
+* @version 1.0
+*/
+
 #ifndef BMPHANDLER_H
 #define BMPHANDLER_H
 

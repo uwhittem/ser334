@@ -3,7 +3,7 @@
 *
 * Completion time: 8 hours (and several cups of coffee)
 *
-* @author Your Name Here
+* @author Uriah Zane Whittemore
 * @version 1.0
 */
 

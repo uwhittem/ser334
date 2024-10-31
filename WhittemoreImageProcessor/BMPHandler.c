@@ -1,9 +1,9 @@
 /**
-* Implementation of several functions to manipulate BMP files.
+* Implementation of image processing functions with a side of humor.
 *
-* Completion time: 6 hours
+* Completion time: 8 hours (and several cups of coffee)
 *
-* @author Your Name Here
+* @author Uriah Zane Whittemore
 * @version 1.0
 */
 
