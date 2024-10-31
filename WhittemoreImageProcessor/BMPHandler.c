@@ -1,22 +1,53 @@
 /**
 * Implementation of several functions to manipulate BMP files.
 *
-* Completion time: ?
+* Completion time: 6 hours
 *
-* @author (your name), Ruben Acuna
+* @author Your Name Here
 * @version 1.0
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "BMPHandler.h"
 
-void readBMPHeader(FILE* file, struct BMP_Header* header) {
-    fread(header->signature, sizeof(char), 2, file);
-    fread(&header->size, sizeof(int), 1, file);
-    fread(&header->reserved1, sizeof(short), 1, file);
-    fread(&header->reserved2, sizeof(short), 1, file);
-    fread(&header->offset_pixel_array, sizeof(int), 1, file);
+#define BMP_HEADER_SIZE 14
+#define DIB_HEADER_SIZE 40
+#define BITS_PER_PIXEL 24
+
+int readBMPHeader(FILE* file, struct BMP_Header* header) {
+    // Validate input parameters
+    if (!file || !header) {
+        fprintf(stderr, "🤦 Attempting to read a header from nothing?\n"
+                       "   The void stares back, but it doesn't contain BMP headers.\n");
+        return -1;
+    }
+
+    // Read header data
+    size_t read_count = 0;
+    read_count += fread(header->signature, sizeof(char), 2, file);
+    read_count += fread(&header->size, sizeof(int), 1, file);
+    read_count += fread(&header->reserved1, sizeof(short), 1, file);
+    read_count += fread(&header->reserved2, sizeof(short), 1, file);
+    read_count += fread(&header->offset_pixel_array, sizeof(int), 1, file);
+
+    // Verify complete header read
+    if (read_count != 6) {
+        fprintf(stderr, "📑 Found only part of a BMP header.\n"
+                       "   Did the rest of it go on vacation?\n");
+        return -1;
+    }
+
+    // Validate BMP signature
+    if (header->signature[0] != 'B' || header->signature[1] != 'M') {
+        fprintf(stderr, "🎭 This file is pretending to be a BMP.\n"
+                       "   Found '%c%c' instead of 'BM'. Identity theft is not a joke!\n",
+                       header->signature[0], header->signature[1]);
+        return -1;
+    }
+
+    return 0;
 }
 
 void writeBMPHeader(FILE* file, struct BMP_Header* header) {

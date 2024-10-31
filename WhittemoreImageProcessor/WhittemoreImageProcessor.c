@@ -6,7 +6,8 @@
 #include "Image.h"
 
 void print_usage() {
-    printf("Usage: WhittemoreImageProcessor input_file [options]\n");
+    printf("\n🎨 WhittemoreImageProcessor: Because MS Paint was too mainstream 🎨\n");
+    printf("\nUsage: WhittemoreImageProcessor input_file [options]\n");
     printf("Options:\n");
     printf("  -o <file>      Output file name (default: output.bmp)\n");
     printf("  -w             Convert to grayscale\n");
@@ -28,8 +29,51 @@ void print_usage() {
     printf("  --vignette <s> Apply vignette effect (0-1)\n");
 }
 
+// Custom error handling with personality
+void print_error(const char* message, int error_type) {
+    switch(error_type) {
+        case 1: // File errors
+            fprintf(stderr, "🚫 File Crisis! %s\n"
+                          "   (Did the file run away? Is it hiding under the bed?)\n", message);
+            break;
+        case 2: // Parameter errors
+            fprintf(stderr, "🤔 Parameter Puzzle: %s\n"
+                          "   (The computer is confused, and frankly, so are we)\n", message);
+            break;
+        case 3: // Memory errors
+            fprintf(stderr, "💾 Memory Meltdown: %s\n"
+                          "   (Have you tried downloading more RAM?)\n", message);
+            break;
+        case 4: // Format errors
+            fprintf(stderr, "📸 Image Identity Crisis: %s\n"
+                          "   (This file thinks it's a BMP, but we have trust issues)\n", message);
+            break;
+        default:
+            fprintf(stderr, "❌ Unexpected Error: %s\n"
+                          "   (Even the error handler is confused)\n", message);
+    }
+}
+
+// Add this function for progress reporting
+void report_progress(const char* operation, int progress, int total) {
+    const int bar_width = 40;
+    float percentage = (float)progress / total;
+    int filled = (int)(bar_width * percentage);
+    
+    printf("\r%s: [", operation);
+    for (int i = 0; i < bar_width; i++) {
+        if (i < filled) printf("█");
+        else printf(" ");
+    }
+    printf("] %.1f%%", percentage * 100);
+    fflush(stdout);
+    
+    if (progress == total) printf("\n");
+}
+
 int main(int argc, char *argv[]) {
     if (argc < 2) {
+        print_error("Running an image processor without an image? That's like making a sandwich without bread!", 2);
         print_usage();
         return 1;
     }
@@ -97,7 +141,7 @@ int main(int argc, char *argv[]) {
     // Open input file
     FILE* file_input = fopen(input_file, "rb");
     if (!file_input) {
-        printf("Error: Cannot open input file %s\n", input_file);
+        print_error("Error: Cannot open input file", 1);
         return 1;
     }
 
@@ -121,34 +165,70 @@ int main(int argc, char *argv[]) {
     Image* img = image_create(pixels, dib_header.width, dib_header.height);
 
     // Apply filters in sequence
-    if (apply_grayscale)
+    printf("\n🎨 Starting image processing adventure...\n");
+    int total_operations = apply_grayscale + (rshift || gshift || bshift) + 
+                          (scale_factor != 1.0) + apply_sepia + (rotation_degrees != 0) +
+                          flip_horizontal + flip_vertical + (brightness != 0) +
+                          (contrast != 1.0) + edge_detect + (blur_radius > 0) +
+                          invert + psychedelic + (vignette > 0.0);
+    int current_operation = 0;
+
+    if (apply_grayscale) {
         image_apply_bw(img);
-    if (rshift || gshift || bshift)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (rshift || gshift || bshift) {
         image_apply_colorshift(img, rshift, gshift, bshift);
-    if (scale_factor != 1.0)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (scale_factor != 1.0) {
         image_apply_resize(img, scale_factor);
-    if (apply_sepia)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (apply_sepia) {
         image_apply_sepia(img);
-    if (rotation_degrees)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (rotation_degrees) {
         image_apply_rotate(img, rotation_degrees);
-    if (flip_horizontal)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (flip_horizontal) {
         image_apply_flip_horizontal(img);
-    if (flip_vertical)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (flip_vertical) {
         image_apply_flip_vertical(img);
-    if (brightness)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (brightness) {
         image_apply_brightness(img, brightness);
-    if (contrast != 1.0)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (contrast != 1.0) {
         image_apply_contrast(img, contrast);
-    if (edge_detect)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (edge_detect) {
         image_apply_edge_detection(img);
-    if (blur_radius)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (blur_radius) {
         image_apply_blur(img, blur_radius);
-    if (invert)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (invert) {
         image_apply_invert(img);
-    if (psychedelic)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (psychedelic) {
         image_apply_psychedelic(img);
-    if (vignette > 0.0)
+        report_progress("Processing", ++current_operation, total_operations);
+    }
+    if (vignette > 0.0) {
         image_apply_vignette(img, vignette);
+        report_progress("Processing", ++current_operation, total_operations);
+    }
 
     // Update headers for potentially resized image
     makeBMPHeader(&bmp_header, img->width, img->height);
@@ -157,7 +237,7 @@ int main(int argc, char *argv[]) {
     // Write output file
     FILE* file_output = fopen(output_file, "wb");
     if (!file_output) {
-        printf("Error: Cannot create output file %s\n", output_file);
+        print_error("Error: Cannot create output file", 1);
         image_destroy(&img);
         return 1;
     }
