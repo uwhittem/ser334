@@ -1,0 +1,140 @@
+
+SER 334 Practice Exam 3
+Updated 12/2/2021
+Last Name:
+First Name:
+Last 4 digits of ASU ID:
+Exam Instructions
+
+The exam is open one note card (3x5 inches). No electronic items are allowed. Write legibly. Please use
+a pen (instead of a pencil) if you have one. There are 90 points available and the exam must be completed
+in 37.5 minutes. This exam has two types of questions:
+Multiple choice questions: There are 50 points of multiple choice questions. An answer is selecting
+one option among the choices given. Each multiple choice is worth 2 to 5 points.
+Short answer questions: There are 40 points of short answer questions. A typical answer is two or
+three sentences. Each short answer question is worth ~10 points.
+
+Scenario questions: The programming questions are given near the end of the paper. They must be
+answered on the question paper. There are 0 points of write-in programming questions.
+
+Topic Possible
+MC: CPU Scheduling 15
+SA: CPU Scheduling 10
+MC: Main Memory 10
+SA: Main Memory 10
+MC: Virtual Memory 15
+SA: Virtual Memory 10
+MC: Mass-Storage Structure 10
+SA: Mass-Storage Structure 10
+Total: 90
+
+
+CPU Scheduling [25 points]
+
+1. Would it make sense to use a periodic scheduler for a system where new jobs are created all the time?
+Explain. [5 points]
+(a) Yes. Periodic schedulers use preemption to ensure that no matter how many jobs are running, all
+will meet their deadlines.
+(b) Yes. Periodic schedulers are meant to receive new jobs periodically.
+(c) No. Periodic schedulers need to know exactly what will run in order to schedule jobs so that they
+won’t miss their deadline.
+(d) No. Periodic schedulers only support threads, not processes.
+2. Consider the following set of processes (tuples look like process, burst size): (P0, 10), (P1, 30), (P2,
+
+15), (P3, 5). Assume the processes arrive in this order as well. Compute the average waiting time for
+First-Come First-Served. [5 points]
+(a) 60/4
+(b) 155/4
+(c) 105/4
+(d) 165/4
+
+3. Consider the following set of processes (tuples look like process, burst size): (P0, 10), (P1, 30), (P2,
+15), (P3, 5). Assume the processes arrive in this order as well. Compute the average turnaround time
+for Round Robin Scheduling (use time quantum 10). [5 points]
+(a) 95/4
+(b) 60/4
+(c) 120/4
+(d) 155/4
+
+4. In a multi-level feedback queue, why does the first queue typically use a smaller time quantum than
+the later ones? (That is, what does that design choice maximize.) [10 points]
+
+
+Main Memory [20 points]
+
+5. Assume that we use a 32-bit unsigned integer to represent logical addresses, within which there are
+bits for a page number and bits for an offset. Does the choice of how many bits are used for each (offset
+or page number), impact the size of the logical address space? Explain. (Keep in mind that if n bits
+are used for offset then 32-n will be used for page number.) [5 points]
+(a) No. Regardless of n and m, the address is 32-bit which means it addresses 2^32 locations.
+(b) No. The number of bits used for n and m must be the same in order to page the memory, which
+means there is only one possible size of the logical address space, 2^32.
+(c) Yes. If more bits are chosen for the page number (m), then there will be more pages meaning a
+larger logical address space.
+(d) Yes. If more bits are chosen for the offset (n), pages will need to store more data meaning a larger
+logical address space.
+
+6. Consider a system where addresses are 6-bits. Let the page offset (n) be 4. Addresses look like [pd],
+where p is page number and d is page offset. What page and offset would decimal address 45 page
+into? [5 points]
+(a) Decimal page 14, decimal offset 3
+(b) Decimal page 2, decimal offset 13
+(c) Decimal page 11, decimal offset 1
+(d) Decimal page 1, decimal offset 12
+
+7. Why is having both logical and physical addresses necessary in an operating system - why are both
+needed? Can’t they be the same? Explain. [10 points]
+
+
+Virtual Memory [25 points]
+
+8. Dealing with a page fault is expensive and something to avoid. In addition to carefully maintaining
+our active frames, we can also avoid page faults by wisely picking which parts of a process should be
+initially loaded. How might we pick which to initially load? Select the best choice from the options
+given. Assume that you cannot load the entire process and you want to select the most worthwhile
+pages. [5 points]
+(a) Do not load anything. It is not possible to avoid page faults so it would be a waste to load pages
+that are not requested.
+(b) Load the header, initial code and standard libraries.
+(c) Load all libraries the process uses since libraries are referenced so often.
+(d) Load all static variables.
+
+9. Consider the following reference string for page lookups: 7, 5, 9, 5, 6, 7, 9. Compute the number of
+page faults that would occur with FIFO assuming 3 pages may be kept in memory. [5 points]
+(a) 3
+(b) 4
+(c) 5
+(d) 6
+
+10. Consider the following reference string for page lookups: 7, 5, 9, 5, 6, 7, 9. Compute the number of
+page faults that would occur with OPR assuming 3 pages may be kept in memory. [5 points]
+(a) 3
+(b) 4
+(c) 5
+(d) 6
+
+11. [Silberschatz] Assume that a program has just referenced an address in virtual memory. Describe a
+scenario in which a TLB miss occurs with no page fault. If no such scenario can occur, explain why.
+[10 points]
+
+
+Mass-Storage Structure [20 points]
+
+12. [Silberschatz 10.10 edited] Why do SSDs often use a FCFS disk-scheduling algorithm? Justify. [5
+points]
+(a) FCFS is used since it can be implemented with a linked list structure.
+(b) Accessing data on a SSD takes random time intervals so FCFS does just as well as any other
+disk-scheduling algorithm.
+(c) FCFS is used to allow keeping data in the same memory location on the SSD.
+(d) Since there are no moving parts to optimize, so FCFS would be picked since it is fast and easy to
+implement.
+
+13. Consider using the SSTF disk scheduling algorithm on the cylinder blocks 19, 1, 98, 75, 92, 38, 47, 18.
+How far would the disk head need to travel? Assume the disk head is initially at 25, and that the disk
+has cylinders 1 to 100. [5 points]
+(a) 100
+(b) 121
+(c) 125
+(d) 133
+14. What impact does HDD storage capacity have on HDD read/write speed? Say for a 2TB vs 3TB drive,
+both standard 3.5” drives. Assume that the number of platters stay the same. [10 points]
